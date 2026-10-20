@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>DNA — Proteção e Reprodução</title>
+<style>
+:root{--bg:#080808;--cyan:#f2f2f2;--violet:#cfcfcf;--pink:#ffffff}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 0,#303030 0,#111 60%,#050505);color:#f4f4f4;font-family:system-ui,Arial,sans-serif;min-height:100vh}
+header{text-align:center;padding:13px 12px 9px;background:#111111ee;border-bottom:1px solid #666}
+header h1{margin:0;font-size:clamp(21px,3vw,34px);letter-spacing:2px;color:#ffffff}header p{margin:4px 0 0;font-size:11px;letter-spacing:2px;color:#c8c8c8}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px auto;padding:0 10px}.stat{min-width:110px;background:#171717;border:1px solid #555;border-radius:12px;padding:8px 15px;text-align:center}.stat b{display:block;font-size:25px}.stat span{font-size:11px;color:#c8c8c8}
+.arena{position:relative;width:calc(100% - 18px);max-width:1100px;height:clamp(320px,56vh,650px);margin:0 auto;border:1px solid #666;border-radius:15px;overflow:hidden;background:#080808;touch-action:manipulation}
+canvas{width:100%;height:100%;display:block;touch-action:manipulation}.hint{position:absolute;top:9px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:1px;color:#c5d8fa;pointer-events:none}
+.controls{display:flex;gap:9px;max-width:1100px;margin:10px auto;padding:0 10px 12px;justify-content:center}.controls button{flex:1;max-width:400px;min-height:55px;border:0;border-radius:12px;font-size:15px;font-weight:900;color:white;touch-action:manipulation;background:linear-gradient(110deg,#eeeeee,#777777);color:#080808;box-shadow:0 5px 20px #1c8cff22}.controls .special{background:linear-gradient(110deg,#444444,#111111);color:#ffffff;border:1px solid #888}button:active{filter:brightness(1.25);transform:scale(.985)}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;background:#080808f2;z-index:2}.panel{max-width:540px;width:100%}.dna{font-size:48px;filter:drop-shadow(0 0 18px #54dfff66)}.eyebrow{font-size:11px;letter-spacing:3px;color:#c9c9c9}.panel h2{font-size:clamp(24px,4vw,39px);line-height:1.08;margin:10px 0;color:white}.panel p{font-size:14px;line-height:1.6;color:#d0d0d0;margin:10px 0 18px}.names{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:15px 0}.names span{padding:7px 11px;border:1px solid #666;background:#191919;border-radius:9px;font-weight:750;font-size:13px}.start{width:100%;max-width:380px;border:0;border-radius:12px;padding:15px;background:linear-gradient(100deg,#eeeeee,#777777);color:#080808;font-weight:950;color:white;font-size:15px}.hidden{display:none!important}.foot{text-align:center;padding:0 12px 14px;font-size:11px;color:#aaaaaa}
+@media(min-width:850px){.arena{height:60vh}.controls button{min-height:65px;font-size:17px}}
+</style>
+</head>
+<body>
+<header><h1>DNA — PROTEÇÃO E REPRODUÇÃO</h1><p>TRABALHO DE CIÊNCIAS · JOGO EDUCATIVO</p></header>
+<section class="stats">
+<div class="stat"><b id="score">0</b><span>ESPERMATOZOIDES ELIMINADOS</span></div>
+<div class="stat"><b id="lives">3</b><span>CHANCES RESTANTES</span></div>
+<div class="stat"><b id="time">00:00</b><span>TEMPO DE DEFESA</span></div>
+<div class="stat"><b id="best">0</b><span>RECORDE DE PONTOS</span></div>
+</section>
+<div class="arena" id="arena"><canvas id="field"></canvas><div class="hint" id="hint">ELIMINE OS ESPERMATOZOIDES ANTES QUE ALCANCEM O ÓVULO</div>
+<div class="overlay" id="intro"><div class="panel"><div class="dna">🧬</div><div class="eyebrow">APRESENTAÇÃO ACADÊMICA · CIÊNCIAS</div><h2>DNA E REPRODUÇÃO<br>HUMANA</h2><p>Este jogo educativo apresenta uma versão simplificada da fecundação. Elimine os espermatozoides antes que alcancem o óvulo. Se um deles chegar ao destino, a simulação indicará a formação de uma nova vida. O desafio fica progressivamente mais rápido.</p><div class="names"><span>Davi</span><span>Lucas P</span><span>Lucas Osório</span><span>Taylor</span></div><p><b>Tema:</b> Ciências<br><b>Professor:</b> Miguel</p><div style="text-align:left;border:1px solid #666;border-radius:10px;padding:12px;background:#151515;margin:12px 0"><b>O que é DNA?</b><br><span style="font-size:13px;color:#d0d0d0">O DNA (ácido desoxirribonucleico) é a molécula que armazena as instruções genéticas dos seres vivos. Na reprodução humana, o espermatozoide e o óvulo normalmente contribuem cada um com 23 cromossomos; após a fecundação, forma-se uma célula chamada zigoto, com 46 cromossomos. O desenvolvimento não é instantâneo: o jogo representa esse processo de maneira simbólica.</span></div><button class="start" id="begin">COMEÇAR MISSÃO ▶</button></div></div>
+<div class="overlay hidden" id="end"><div class="panel"><div class="dna" id="endIcon">🧬</div><div class="eyebrow">MISSÃO FINALIZADA</div><h2 id="endTitle">FIM DE JOGO</h2><p id="summary"></p><button class="start" id="retry">REINICIAR SIMULAÇÃO ↻</button></div></div>
+</div>
+<div class="controls"><button id="pulse">TOQUE PARA ATACAR</button></div>
+<div class="foot">JOGO SOLO PARA TELÃO · TOQUE DIRETAMENTE NOS ALVOS · SEM PODERES</div>
+<script>
+(()=>{const $=id=>document.getElementById(id),cv=$('field'),ctx=cv.getContext('2d');let W=600,H=400,active=false,elapsed=0,last=0,spawn=0,score=0,lives=3,shots=[],enemies=[],bits=[],stars=[],raf=0,best=0,cool=0;
+const rand=(a,b)=>a+Math.random()*(b-a);
+function resize(){let r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);stars=Array.from({length:85},()=>({x:rand(0,W),y:rand(0,H),r:rand(.5,1.7),a:rand(.15,.8)}));draw()}
+function spawnEnemy(){enemies.push({x:rand(25,W-25),y:H+20,r:rand(9,14),speed:rand(115,155)+elapsed*1.4,phase:rand(0,7),wiggle:rand(8,25)})}
+function burst(x,y,c,n=12){for(let i=0;i<n;i++){let a=rand(0,Math.PI*2),v=rand(35,150);bits.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,t:rand(.25,.6),max:.6,c,r:rand(1.5,4)})}}
+function update(){ $('score').textContent=score;$('lives').textContent=lives;$('time').textContent=String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(Math.floor(elapsed%60)).padStart(2,'0');$('best').textContent=best}
+function kill(e){let i=enemies.indexOf(e);if(i<0)return;enemies.splice(i,1);score++;best=Math.max(best,score);burst(e.x,e.y,'#ffffff',15);$('hint').textContent=['ALVO ELIMINADO! DNA PROTEGIDO!','BOA DEFESA! CONTINUE!','EXCELENTE REFLEXO!'][score%3];update()}
+function point(ev){if(!active)return;let r=cv.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;let near=enemies.filter(e=>Math.hypot(e.x-x,e.y-y)<Math.max(34,e.r+23)).sort((a,b)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y));if(near.length)kill(near[0]);else{burst(x,y,'#eeeeee',3);}}
+function shoot(){if(!active||cool>0)return;cool=.22;let target=enemies.slice().sort((a,b)=>a.y-b.y)[0];if(target)kill(target);else{$('hint').textContent='DISPARO LANÇADO! TOQUE NO ALVO PARA MAIOR PRECISÃO';}}
+
+function draw(){ctx.clearRect(0,0,W,H);let g=ctx.createRadialGradient(W/2,H*.35,5,W/2,H*.4,Math.max(W,H)*.8);g.addColorStop(0,'#303030');g.addColorStop(1,'#080808');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+for(let s of stars){ctx.globalAlpha=s.a;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill()}ctx.globalAlpha=1;
+let ox=W/2,oy=H*.19,or=Math.min(37,W*.075);ctx.save();ctx.shadowColor='#aaaaaa';ctx.shadowBlur=25;ctx.fillStyle='#aaaaaa';ctx.beginPath();ctx.arc(ox,oy,or,0,7);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#eeeeee';ctx.lineWidth=3;ctx.beginPath();ctx.arc(ox,oy,or*.68,0,7);ctx.stroke();ctx.restore();ctx.textAlign='center';ctx.fillStyle='#dddddd';ctx.font='bold 11px system-ui';ctx.fillText('ÓVULO · DESTINO A PROTEGER',ox,oy+or+19);
+for(let e of enemies){ctx.save();ctx.translate(e.x,e.y);ctx.rotate(e.phase);ctx.shadowColor='#eeeeee';ctx.shadowBlur=15;ctx.fillStyle='#eeeeee';ctx.beginPath();ctx.arc(0,0,e.r,0,7);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-e.r*.25,-e.r*.25,e.r*.3,0,7);ctx.fill();ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,e.r*.8);ctx.bezierCurveTo(-e.wiggle,e.r+7,e.wiggle,e.r+13,Math.sin(e.phase)*e.wiggle,e.r+23);ctx.stroke();ctx.restore()}
+for(let p of bits){ctx.globalAlpha=Math.max(0,p.t/p.max);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill()}ctx.globalAlpha=1;
+if(active){ctx.textAlign='center';ctx.font='bold 12px system-ui';ctx.fillStyle='#b9cbed';ctx.fillText('TOQUE NOS ALVOS · IMPEÇA A CHEGADA AO ÓVULO',W/2,H-12)}}
+function finish(){active=false;cancelAnimationFrame(raf);$('endIcon').textContent=lives===0?'🧬':'🏆';$('endTitle').textContent=lives===0?'UMA NOVA VIDA FOI GERADA!':'MISSÃO CONCLUÍDA!';$('summary').textContent=`Um espermatozoide alcançou o óvulo na simulação. A fecundação foi representada e uma nova vida foi gerada no contexto do jogo. Você eliminou ${score} espermatozoides e resistiu por ${Math.floor(elapsed)} segundos. Esta é uma representação educativa simplificada; na realidade, a fecundação e o desenvolvimento embrionário são processos biológicos, não instantâneos.`;$('end').classList.remove('hidden')}
+function tick(now){if(!active)return;let dt=Math.min((now-last)/1000,.05);last=now;elapsed+=dt;spawn+=dt;cool=Math.max(0,cool-dt);if(spawn>.38){spawn=0;spawnEnemy();if(elapsed>8&&Math.random()<.8)spawnEnemy()}for(let e of [...enemies]){e.y-=e.speed*dt;e.x+=Math.sin(elapsed*2+e.phase)*e.wiggle*dt;e.phase+=dt*2;if(e.y<oyLimit()){enemies.splice(enemies.indexOf(e),1);lives--;burst(e.x,e.y,'#aaaaaa',18);$('hint').textContent='FECUNDAÇÃO SIMULADA: UMA NOVA VIDA FOI GERADA!';update();if(lives<=0){finish();break}}}for(let p of bits){p.x+=p.vx*dt;p.y+=p.vy*dt;p.t-=dt}bits=bits.filter(p=>p.t>0);update();draw();if(active)raf=requestAnimationFrame(tick)}
+function oyLimit(){return H*.19+Math.min(37,W*.075)+17}
+function start(){cancelAnimationFrame(raf);elapsed=spawn=score=0;lives=3;cool=0;enemies=[];bits=[];active=true;$('intro').classList.add('hidden');$('end').classList.add('hidden');$('hint').textContent='ELIMINE OS ESPERMATOZOIDES ANTES QUE ALCANCEM O ÓVULO';update();last=performance.now();raf=requestAnimationFrame(tick)}
+cv.addEventListener('pointerdown',e=>{e.preventDefault();point(e)});$('pulse').addEventListener('click',shoot);$('begin').addEventListener('click',start);$('retry').addEventListener('click',start);if('ResizeObserver'in window)new ResizeObserver(resize).observe($('arena'));else addEventListener('resize',resize);resize();update()})();
+</script>
+</body></html>
